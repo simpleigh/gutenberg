@@ -18,9 +18,9 @@
                     "opensInNewTab": false
                 },
                 "innerBlocks": [],
-                "originalContent": "<li class=\"wp-block-navigation-menu-item\">\n\t\t<a href=\"https://wordpress.org/\">WordPress</a>\n\t</li>"
+                "originalContent": "<a class=\"wp-block-navigation-menu-item\" href=\"https://wordpress.org/\">WordPress</a>"
             }
         ],
-        "originalContent": "<ul class=\"wp-block-navigation-menu\">\n\t\n</ul>"
+        "originalContent": "<nav class=\"wp-block-navigation-menu\">\n\t\n</nav>"
     }
 ]
