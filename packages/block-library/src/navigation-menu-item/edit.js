@@ -39,7 +39,10 @@ function NavigationMenuItemEdit( {
 } ) {
 	const plainTextRef = useRef( null );
 	const onEditLableClicked = useCallback(
-		() => invoke( plainTextRef, [ 'current', 'textarea', 'focus' ] ),
+		( onClose ) => () => {
+			onClose();
+			invoke( plainTextRef, [ 'current', 'textarea', 'focus' ] );
+		},
 		[ plainTextRef ]
 	);
 	let content;
@@ -66,11 +69,11 @@ function NavigationMenuItemEdit( {
 							aria-expanded={ isOpen }
 						/>
 					) }
-					renderContent={ () => (
+					renderContent={ ( { onClose } ) => (
 						<MenuItemActions
 							clientId={ clientId }
 							destination={ attributes.destination }
-							onEditLableClicked={ onEditLableClicked }
+							onEditLableClicked={ onEditLableClicked( onClose ) }
 						/>
 					) }
 				/>
