@@ -67,6 +67,7 @@ class Editor extends Component {
 			hasFixedToolbar,
 			focusMode,
 			post,
+			postId,
 			initialEdits,
 			onError,
 			hiddenBlockTypes,
@@ -95,7 +96,7 @@ class Editor extends Component {
 					{ ...props }
 				>
 					<ErrorBoundary onError={ onError }>
-						<EditorInitialization postId={ post.id } />
+						<EditorInitialization postId={ postId } />
 						<Layout />
 						<KeyboardShortcuts shortcuts={ preventEventDiscovery } />
 					</ErrorBoundary>
