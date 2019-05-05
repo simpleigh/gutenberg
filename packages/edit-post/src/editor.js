@@ -17,6 +17,7 @@ import { KeyboardShortcuts } from '@wordpress/components';
  */
 import preventEventDiscovery from './prevent-event-discovery';
 import Layout from './components/layout';
+import EditorInitialization from './components/editor-initialization';
 
 class Editor extends Component {
 	constructor() {
@@ -94,6 +95,7 @@ class Editor extends Component {
 					{ ...props }
 				>
 					<ErrorBoundary onError={ onError }>
+						<EditorInitialization postId={ post.id } />
 						<Layout />
 						<KeyboardShortcuts shortcuts={ preventEventDiscovery } />
 					</ErrorBoundary>
