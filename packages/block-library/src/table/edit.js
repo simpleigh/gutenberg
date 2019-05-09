@@ -413,9 +413,11 @@ export class TableEdit extends Component {
 			className,
 			backgroundColor,
 			setBackgroundColor,
+			setAttributes,
+			isSelected,
 		} = this.props;
 		const { initialRowCount, initialColumnCount } = this.state;
-		const { hasFixedLayout, head, body, foot } = attributes;
+		const { hasFixedLayout, caption, head, body, foot } = attributes;
 		const isEmpty = ! head.length && ! body.length && ! foot.length;
 		const Section = this.renderSection;
 
@@ -499,10 +501,20 @@ export class TableEdit extends Component {
 					/>
 				</InspectorControls>
 				<table className={ classes }>
+					<caption>{ caption }</caption>
 					<Section type="head" rows={ head } />
 					<Section type="body" rows={ body } />
 					<Section type="foot" rows={ foot } />
 				</table>
+				<RichText
+					className={ classnames( 'wp-block-table__caption-content', {
+						'is-visible': isSelected || caption,
+					} ) }
+					tagName="p"
+					placeholder={ __( 'Write caption…' ) }
+					value={ caption }
+					onChange={ ( value ) => setAttributes( { caption: value } ) }
+				/>
 			</>
 		);
 	}

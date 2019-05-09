@@ -40,16 +40,37 @@
 	&__cell-content {
 		padding: 0.5em;
 	}
+
 	// Extra specificity to override default Placeholder styles.
 	&__placeholder-form.wp-block-table__placeholder-form {
 		text-align: left;
 		align-items: center;
 	}
+
 	&__placeholder-input {
 		width: 100px;
 	}
+
 	&__placeholder-button {
 		min-width: 100px;
 		justify-content: center;
+	}
+
+	caption {
+		visibility: hidden;
+		height: 0;
+	}
+
+	&__caption-content {
+		@include caption-style-theme();
+		overflow: hidden;
+		height: 0;
+		margin: 0.5em 0 0;
+
+		&.is-visible {
+			overflow: auto;
+			height: auto;
+			margin: 0.5em 0 0;
+		}
 	}
 }

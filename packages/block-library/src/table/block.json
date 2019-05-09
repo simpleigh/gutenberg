@@ -9,6 +9,11 @@
 		"backgroundColor": {
 			"type": "string"
 		},
+		"caption": {
+			"type": "string",
+			"source": "html",
+			"selector": "caption"
+		},
 		"head": {
 			"type": "array",
 			"default": [],

@@ -9,4 +9,9 @@
 		border: 1px solid;
 		word-break: break-all;
 	}
+
+	caption {
+		caption-side: bottom;
+		@include caption-style-theme();
+	}
 }
