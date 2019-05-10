@@ -12,6 +12,7 @@
 
 	caption {
 		caption-side: bottom;
+		margin-top: 0.5em;
 		@include caption-style-theme();
 	}
 }
