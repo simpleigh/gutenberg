@@ -12,7 +12,7 @@
 		"caption": {
 			"type": "string",
 			"source": "html",
-			"selector": "caption"
+			"selector": "figcaption"
 		},
 		"head": {
 			"type": "array",
