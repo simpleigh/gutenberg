@@ -506,6 +506,13 @@ export class TableEdit extends Component {
 					<Section type="body" rows={ body } />
 					<Section type="foot" rows={ foot } />
 				</table>
+				{ /*
+				  * A RichText outside of the table is used to represent the
+				  * caption when editing. This is because a RichText inside
+				  * the table wouldn't produce valid table markup—RichText
+				  * wraps its contenteditable element in multiple divs, a div
+				  * is not a valid child of a table.
+				  */ }
 				<RichText
 					className={ classnames( 'wp-block-table__caption-content', {
 						'is-visible': isSelected || caption,
