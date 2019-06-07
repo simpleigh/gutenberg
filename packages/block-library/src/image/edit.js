@@ -8,6 +8,7 @@ import {
 	isEmpty,
 	map,
 	last,
+	omit,
 	pick,
 } from 'lodash';
 
@@ -126,7 +127,7 @@ class ImageEdit extends Component {
 	}
 
 	componentDidMount() {
-		const { attributes, setAttributes, noticeOperations } = this.props;
+		const { attributes, noticeOperations } = this.props;
 		const { id, url = '' } = attributes;
 
 		if ( isTemporaryImage( id, url ) ) {
@@ -136,7 +137,7 @@ class ImageEdit extends Component {
 				mediaUpload( {
 					filesList: [ file ],
 					onFileChange: ( [ image ] ) => {
-						setAttributes( pickRelevantMediaFiles( image ) );
+						this.onSelectImage( image );
 					},
 					allowedTypes: ALLOWED_MEDIA_TYPES,
 					onError: ( message ) => {
@@ -186,11 +187,20 @@ class ImageEdit extends Component {
 			isEditing: false,
 		} );
 
-		this.props.setAttributes( {
+		let mediaAttributes = {
 			...pickRelevantMediaFiles( media ),
 			width: undefined,
 			height: undefined,
-		} );
+		};
+
+		const { id, url, alt } = this.props.attributes;
+		// If the current image is temporary but an alt text was meanwhile wrotten by the user,
+		// make sure the text is not overwritten.
+		if ( alt && isTemporaryImage( id, url ) ) {
+			mediaAttributes = omit( mediaAttributes, [ 'alt' ] );
+		}
+
+		this.props.setAttributes( mediaAttributes );
 	}
 
 	onSetLinkDestination( value ) {
