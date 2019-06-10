@@ -12,7 +12,8 @@
 		"caption": {
 			"type": "string",
 			"source": "html",
-			"selector": "caption"
+			"selector": "caption",
+			"default": ""
 		},
 		"head": {
 			"type": "array",

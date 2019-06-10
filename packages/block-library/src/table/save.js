@@ -56,7 +56,7 @@ export default function save( { attributes } ) {
 
 	return (
 		<table className={ classes }>
-			{ !! caption && <RichText.Content tagName="caption" value={ caption } /> }
+			{ ! RichText.isEmpty( caption ) && <RichText.Content tagName="caption" value={ caption } /> }
 			<Section type="head" rows={ head } />
 			<Section type="body" rows={ body } />
 			<Section type="foot" rows={ foot } />

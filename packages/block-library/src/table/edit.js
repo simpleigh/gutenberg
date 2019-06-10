@@ -501,18 +501,15 @@ export class TableEdit extends Component {
 					/>
 				</InspectorControls>
 				<table className={ classes }>
-					<caption>{ caption }</caption>
+					{ /* Caption is specified as visibly hidden. This allows the caption to be
+					read by a screenreader, but remain editable using a RichText outside the table.
+					Specifying a key forces react to replace the caption element,
+					ensure the up-to-date caption is read by voiceover in chrome */ }
+					<caption className="screen-reader-text" key={ caption }>{ caption }</caption>
 					<Section type="head" rows={ head } />
 					<Section type="body" rows={ body } />
 					<Section type="foot" rows={ foot } />
 				</table>
-				{ /*
-				  * A RichText outside of the table is used to represent the
-				  * caption when editing. This is because a RichText inside
-				  * the table wouldn't produce valid table markup—RichText
-				  * wraps its contenteditable element in multiple divs, a div
-				  * is not a valid child of a table.
-				  */ }
 				<RichText
 					className={ classnames( 'wp-block-table__caption-content', {
 						'is-visible': isSelected || caption,
@@ -521,6 +518,7 @@ export class TableEdit extends Component {
 					placeholder={ __( 'Write caption…' ) }
 					value={ caption }
 					onChange={ ( value ) => setAttributes( { caption: value } ) }
+					// Deselect the selected table cell when the caption is focused.
 					unstableOnFocus={ () => this.setState( { selectedCell: null } ) }
 					inlineToolbar
 				/>
