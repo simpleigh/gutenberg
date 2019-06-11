@@ -120,7 +120,7 @@ describe( 'Table', () => {
 		await insertBlock( 'Table' );
 
 		// Create the table.
-		const createButton = await page.$x( "//div[@data-type='core/table']//button[text()='Create']" );
+		const createButton = await page.$x( createButtonSelector );
 		await createButton[ 0 ].click();
 
 		// Click the first cell and add some text.
