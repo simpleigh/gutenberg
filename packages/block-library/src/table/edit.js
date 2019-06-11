@@ -302,8 +302,16 @@ export class TableEdit extends Component {
 	 */
 	getTableControls() {
 		const { selectedCell } = this.state;
+		const { attributes, setAttributes } = this.props;
+		const { captionPosition } = attributes;
+		const isCaptionTop = captionPosition === 'top';
 
 		return [
+			{
+				icon: isCaptionTop ? 'arrow-down-alt' : 'arrow-up-alt',
+				title: isCaptionTop ? __( 'Show Caption Below Table' ) : __( 'Show Caption Above Table' ),
+				onClick: () => setAttributes( { captionPosition: isCaptionTop ? 'bottom' : 'top' } ),
+			},
 			{
 				icon: 'table-row-before',
 				title: __( 'Add Row Before' ),
@@ -417,7 +425,7 @@ export class TableEdit extends Component {
 			isSelected,
 		} = this.props;
 		const { initialRowCount, initialColumnCount } = this.state;
-		const { hasFixedLayout, caption, head, body, foot } = attributes;
+		const { hasFixedLayout, caption, captionPosition, head, body, foot } = attributes;
 		const isEmpty = ! head.length && ! body.length && ! foot.length;
 		const Section = this.renderSection;
 
@@ -500,6 +508,20 @@ export class TableEdit extends Component {
 						] }
 					/>
 				</InspectorControls>
+				{ captionPosition === 'top' && (
+					<RichText
+						className={ classnames( 'wp-block-table__caption-content', {
+							'is-visible': isSelected || ! RichText.isEmpty( caption ),
+							'is-position-top': captionPosition === 'top',
+						} ) }
+						tagName="p"
+						placeholder={ __( 'Write caption…' ) }
+						value={ caption }
+						onChange={ ( value ) => setAttributes( { caption: value } ) }
+						// Deselect the selected table cell when the caption is focused.
+						unstableOnFocus={ () => this.setState( { selectedCell: null } ) }
+					/>
+				) }
 				<table className={ classes }>
 					{ /* Caption is specified as visibly hidden. This allows the caption to be
 					read by a screenreader, but remain editable using a RichText outside the table.
@@ -510,18 +532,21 @@ export class TableEdit extends Component {
 					<Section type="body" rows={ body } />
 					<Section type="foot" rows={ foot } />
 				</table>
-				<RichText
-					className={ classnames( 'wp-block-table__caption-content', {
-						'is-visible': isSelected || caption,
-					} ) }
-					tagName="p"
-					placeholder={ __( 'Write caption…' ) }
-					value={ caption }
-					onChange={ ( value ) => setAttributes( { caption: value } ) }
-					// Deselect the selected table cell when the caption is focused.
-					unstableOnFocus={ () => this.setState( { selectedCell: null } ) }
-					inlineToolbar
-				/>
+				{ captionPosition === 'bottom' && (
+					<RichText
+						className={ classnames( 'wp-block-table__caption-content', {
+							'is-visible': isSelected || ! RichText.isEmpty( caption ),
+							'is-position-bottom': captionPosition === 'bottom',
+						} ) }
+						tagName="p"
+						placeholder={ __( 'Write caption…' ) }
+						value={ caption }
+						onChange={ ( value ) => setAttributes( { caption: value } ) }
+						// Deselect the selected table cell when the caption is focused.
+						unstableOnFocus={ () => this.setState( { selectedCell: null } ) }
+						inlineToolbar
+					/>
+				) }
 			</>
 		);
 	}
