@@ -465,6 +465,25 @@ export class TableEdit extends Component {
 			'has-background': !! backgroundColor.color,
 		} );
 
+		const captionRichTextElement = (
+			<RichText
+				className={ classnames( 'wp-block-table__caption-content', {
+					'is-visible': isSelected || ! RichText.isEmpty( caption ),
+					'is-position-top': captionPosition === 'top',
+					'is-position-bottom': captionPosition === 'bottom',
+				} ) }
+				tagName="p"
+				placeholder={ __( 'Write caption…' ) }
+				value={ caption }
+				onChange={ ( value ) => setAttributes( { caption: value } ) }
+				// Deselect the selected table cell when the caption is focused.
+				unstableOnFocus={ () => this.setState( { selectedCell: null } ) }
+				// Only show inlineToolbar when caption is at the bottom,
+				// otherwise it's overlaped by the main block toolbar.
+				inlineToolbar={ captionPosition === 'bottom' }
+			/>
+		);
+
 		return (
 			<>
 				<BlockControls>
@@ -508,45 +527,19 @@ export class TableEdit extends Component {
 						] }
 					/>
 				</InspectorControls>
-				{ captionPosition === 'top' && (
-					<RichText
-						className={ classnames( 'wp-block-table__caption-content', {
-							'is-visible': isSelected || ! RichText.isEmpty( caption ),
-							'is-position-top': captionPosition === 'top',
-						} ) }
-						tagName="p"
-						placeholder={ __( 'Write caption…' ) }
-						value={ caption }
-						onChange={ ( value ) => setAttributes( { caption: value } ) }
-						// Deselect the selected table cell when the caption is focused.
-						unstableOnFocus={ () => this.setState( { selectedCell: null } ) }
-					/>
-				) }
+				{ captionPosition === 'top' && captionRichTextElement }
 				<table className={ classes }>
-					{ /* Caption is specified as visibly hidden. This allows the caption to be
-					read by a screenreader, but remain editable using a RichText outside the table.
-					Specifying a key forces react to replace the caption element,
-					ensure the up-to-date caption is read by voiceover in chrome */ }
+					{ /* Using a RichText within a caption element doesn't work with assistive
+					technologies. This caption element is specified as visibly hidden so that it
+					can be read by a screenreader, but be edited using a RichText outside the table.
+					Specifying a key on the element forces react to replace the caption element,
+					which ensures the up-to-date caption is read by voiceover in chrome. */ }
 					<caption className="screen-reader-text" key={ caption }>{ caption }</caption>
 					<Section type="head" rows={ head } />
 					<Section type="body" rows={ body } />
 					<Section type="foot" rows={ foot } />
 				</table>
-				{ captionPosition === 'bottom' && (
-					<RichText
-						className={ classnames( 'wp-block-table__caption-content', {
-							'is-visible': isSelected || ! RichText.isEmpty( caption ),
-							'is-position-bottom': captionPosition === 'bottom',
-						} ) }
-						tagName="p"
-						placeholder={ __( 'Write caption…' ) }
-						value={ caption }
-						onChange={ ( value ) => setAttributes( { caption: value } ) }
-						// Deselect the selected table cell when the caption is focused.
-						unstableOnFocus={ () => this.setState( { selectedCell: null } ) }
-						inlineToolbar
-					/>
-				) }
+				{ captionPosition === 'bottom' && captionRichTextElement }
 			</>
 		);
 	}
